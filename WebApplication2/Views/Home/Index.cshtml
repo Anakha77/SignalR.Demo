@@ -1,0 +1,36 @@
+﻿@using System.Collections.Generic
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@model IDictionary<string, string>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<button onclick="reload()">Recharger la page</button>
+
+<h3>Cookies disponibles</h3>
+<dl>
+    @foreach (var cookieName in Model.Keys)
+    {
+        <dt>@cookieName</dt>
+        <dd>@Model[cookieName]</dd>
+    }
+</dl>
+
+<script src="~/lib/signalr/dist/browser/signalr.js"></script>
+<script language="javascript">
+    "use strict";
+    function reload() {
+        document.location.href = './';
+    }
+
+    var connection = new signalR.HubConnectionBuilder().withUrl("http://prive.uc1083.local:5000/loginHub").build();
+
+    connection.start().catch(function (err) {
+        return console.error(err.toString());
+    });
+
+    connection.on("UserLoggedOut", reload);
+    connection.on("UserLoggedIn", reload);
+</script>

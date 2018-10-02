@@ -1,0 +1,30 @@
+﻿@using System.Collections.Generic
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@model IDictionary<string, string>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+@if (!Model.Keys.Contains("WebApplication.Cookies.Private"))
+{
+    <form asp-action="Login">
+        <input type="submit" value="Connexion" />
+    </form>
+}
+else
+{
+    <form asp-action="Logout">
+        <input type="submit" value="Déconnexion" />
+    </form>
+}
+
+<h3>Cookies disponibles</h3>
+<dl>
+    @foreach (var cookieName in Model.Keys)
+    {
+        <dt>@cookieName</dt>
+        <dd>@Model[cookieName]</dd>
+    }
+</dl>
