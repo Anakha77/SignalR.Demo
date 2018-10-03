@@ -18,7 +18,7 @@
     "WebApplication2": {
       "commandName": "Project",
       "launchBrowser": true,
-      "applicationUrl": "http://localhost:5000",
+      "applicationUrl": "http://public.uc1083.local:50252",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

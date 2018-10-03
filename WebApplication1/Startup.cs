@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using System;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using WebApplication1.Hubs;
 
@@ -11,6 +14,16 @@ namespace WebApplication1
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
+                {
+                    var builder = new CookieBuilder();
+                    builder.Name = "WebApplication.Cookies";
+                    builder.HttpOnly = true;
+                    builder.SameSite = SameSiteMode.Lax;
+                    builder.MaxAge = TimeSpan.FromHours(1);
+                });
+
             services.AddMvc();
             services.AddSignalR();
         }
@@ -29,6 +42,8 @@ namespace WebApplication1
                     .WithMethods("GET", "POST")
                     .AllowCredentials();
             });
+
+            app.UseAuthentication();
 
             app.UseSignalR(routes =>
             {

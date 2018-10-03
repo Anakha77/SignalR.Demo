@@ -1,30 +1,59 @@
-﻿@using System.Collections.Generic
+﻿@using WebApplication1.Models
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
-@model IDictionary<string, string>
+@model LoginViewModel
 @{
     ViewData["Title"] = "Index";
 }
 
 <h2>Index</h2>
 
-@if (!Model.Keys.Contains("WebApplication.Cookies.Private"))
-{
-    <form asp-action="Login">
-        <input type="submit" value="Connexion" />
-    </form>
-}
-else
-{
-    <form asp-action="Logout">
-        <input type="submit" value="Déconnexion" />
-    </form>
-}
+<div class="container">
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <h3>Bienvenue @User.Identity.Name</h3>
+                        <form asp-action="Logout">
+                            <input type="submit" value="Déconnexion" />
+                        </form>
+                    }
+                    else
+                    {
+                        <form asp-action="Login">
+                            <fieldset>
+                                <div class="form-group">
+                                    <label asp-for="Username">Login</label>
+                                    <input class="form-control" placeholder="Login" asp-for="Username" autofocus>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Password">Mot de passe</label>
+                                    <input type="password" class="form-control" placeholder="Mot de passe" asp-for="Password" autocomplete="off">
+                                </div>
 
-<h3>Cookies disponibles</h3>
-<dl>
-    @foreach (var cookieName in Model.Keys)
-    {
-        <dt>@cookieName</dt>
-        <dd>@Model[cookieName]</dd>
-    }
-</dl>
+                                <input type="submit" value="Connexion" />
+                            </fieldset>
+                        </form>
+                    }
+                </div>
+            </div>
+        </div>
+        </div>
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <h3>Cookies disponibles</h3>
+                    <dl>
+                        @foreach (var cookieName in Model.Cookies.Keys)
+                        {
+                            <dt>@cookieName</dt>
+                            <dd>@Model.Cookies[cookieName]</dd>
+                        }
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>

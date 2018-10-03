@@ -5,32 +5,44 @@
     ViewData["Title"] = "Index";
 }
 
-<h2>Index</h2>
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css" />
+</head>
 
-<button onclick="reload()">Recharger la page</button>
+<body>
+    <h2>Index</h2>
 
-<h3>Cookies disponibles</h3>
-<dl>
-    @foreach (var cookieName in Model.Keys)
-    {
-        <dt>@cookieName</dt>
-        <dd>@Model[cookieName]</dd>
-    }
-</dl>
+    <h3>Cookies disponibles</h3>
+    <dl>
+        @foreach (var cookieName in Model.Keys)
+        {
+            <dt>@cookieName</dt>
+            <dd>@Model[cookieName]</dd>
+        }
+    </dl>
 
-<script src="~/lib/signalr/dist/browser/signalr.js"></script>
-<script language="javascript">
-    "use strict";
-    function reload() {
-        document.location.href = './';
-    }
+    <script src="~/lib/signalr/dist/browser/signalr.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/bootstrap.min.js"></script>
+    <script language="javascript">
+        "use strict";
+        function reload() {
+            document.location.href = './';
+        }
 
-    var connection = new signalR.HubConnectionBuilder().withUrl("http://prive.uc1083.local:5000/loginHub").build();
+        const serverPort = '48522';
+        var url = 'http://prive.uc1083.local:' + serverPort + '/loginHub';
+        var connection = new signalR.HubConnectionBuilder().withUrl(url).build();
 
-    connection.start().catch(function (err) {
-        return console.error(err.toString());
-    });
+        connection.start().catch(function (err) {
+            return console.error(err.toString());
+        });
 
-    connection.on("UserLoggedOut", reload);
-    connection.on("UserLoggedIn", reload);
-</script>
+        connection.on("UserLoggedOut", reload);
+        connection.on("UserLoggedIn", reload);
+    </script>
+
+</body>
+</html>
